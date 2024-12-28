@@ -1,0 +1,49 @@
+command:
+  - ${env}
+  - python3
+  - ${program}
+  - +experiments/dml_paper/miller_dataset=similarity.sweep
+  - ${args_no_hyphens}
+method: bayes
+metric:
+  goal: maximize
+  name: best_precision_at_1/validation/mean
+name: miller_similarity_sweep
+parameters:
+  model.num_out_classes:
+    distribution: q_uniform
+    min: 32
+    max: 320
+    q: 32
+  lightning_module.optimizer_options.lr:
+    distribution: log_uniform_values
+    max: 0.00005
+    min: 0.000005
+  model.hyperparameters.rnn_hidden_size:
+    distribution: q_uniform
+    min: 100
+    max: 300
+    q: 50
+  model.hyperparameters.num_rnn_layers:
+    min: 1
+    max: 3
+  model.hyperparameters.dropout:
+    min: 0.0
+    max: 0.4
+  lightning_module.loss_options.name:
+    value: "ArcFaceLoss"
+  lightning_module.loss_options.weight_reg_weight:
+    distribution: log_uniform_values
+    min: 1e-6
+    max: 0.1
+  lightning_module.loss_options.margin:
+    distribution: uniform
+    min: 1
+    max: 20
+  lightning_module.loss_options.scale:
+    distribution: log_uniform_values
+    min: 1
+    max: 500
+program: run.py
+project: YOUR_WANDB_PROJECT
+entity: YOUR_WANDB_ENTITY

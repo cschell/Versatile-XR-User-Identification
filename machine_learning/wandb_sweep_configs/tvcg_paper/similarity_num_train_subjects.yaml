@@ -1,0 +1,14 @@
+command:
+  - ${env}
+  - python3
+  - ${program}
+  - +experiments/dml_paper=similarity_num_train_subjects.sweep
+  - ${args_no_hyphens}
+method: grid
+name: train_size_sweep
+parameters:
+  datamodule.split.train:
+    values: [ 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25 ]
+program: run.py
+project: YOUR_WANDB_PROJECT
+entity: YOUR_WANDB_ENTITY

@@ -1,0 +1,17 @@
+command:
+  - ${env}
+  - python3
+  - ${program}
+  - +experiments/dml_paper=classification_training_size.sweep
+  - ${args_no_hyphens}
+method: grid
+name: classification_training_size_sweep
+parameters:
+  datamodule.dataset_kwargs.limit_train_time:
+    values: [ 30, 35 ]
+  datamodule.dataset_kwargs.train_time_seed:
+    values: [ 204, 727, 671,  89, 685 ]
+
+program: run.py
+project: YOUR_WANDB_PROJECT
+entity: YOUR_WANDB_ENTITY

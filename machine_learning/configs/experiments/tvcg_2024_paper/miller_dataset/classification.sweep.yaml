@@ -1,0 +1,46 @@
+# @package _global_
+
+defaults:
+  - override /model: rnn_model.yaml
+  - override /datamodule: window_datamodule.yaml
+
+run_group: miller_baseline
+
+logger:
+  wandb:
+    project: "Half-Life-Alyx-Metric"
+    entity: "YOUR_WANDB_ENTITY"
+
+datamodule:
+  data_path: ${data_dir}/15_fps_classifier_41_subjects_miller.hdf5
+  batch_size: 200
+  dataset_kwargs:
+    coordinate_system:
+      forward: "x"
+      right: "z"
+      up: "y"
+  data_hyperparameters:
+    original_fps: 15
+    fps: 15
+    window_size: 43
+    data_encoding:
+      value: "body_relative_acceleration"
+
+lightning_module:
+  optimizer_options:
+    lr: 0.0007374423874718989
+
+trainer:
+  max_epochs: 200
+  min_epochs: 200
+  auto_scale_batch_size: True
+  check_val_every_n_epoch: 1
+
+model:
+  num_out_classes: "auto" # is set in train.py
+  hyperparameters:
+    cell_type: "GRU"
+    rnn_hidden_size: 200
+    dropout: 0.1932622228847167
+    num_rnn_layers: 4
+

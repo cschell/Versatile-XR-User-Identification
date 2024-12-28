@@ -1,0 +1,56 @@
+# @package _global_
+
+defaults:
+  - override /model: rnn_model.yaml
+  - override /datamodule: similarity_datamodule.yaml
+  - override /lightning_module: similarity_module.yaml
+  - override /callbacks: rnn_similarity.yaml
+
+run_group: arc_face_loss
+
+cache_datamodule: True
+
+logger:
+  wandb:
+    project: "Half-Life-Alyx-Metric"
+    entity: "YOUR_WANDB_ENTITY"
+
+trainer:
+  max_epochs: 40
+  min_epochs: 40
+  auto_scale_batch_size: True
+  check_val_every_n_epoch: 1
+
+datamodule:
+  data_path: ${data_dir}/15_fps-70_subjects-metric_learning_movement.hdf5
+  batch_size: 50
+  dataset_kwargs:
+    coordinate_system:
+      forward: "x"
+      right: "z"
+      up: "y"
+  data_hyperparameters:
+    original_fps: 15
+    fps: 15
+    window_size: 500
+    data_encoding:
+      value: "body_relative_acceleration"
+
+lightning_module:
+  optimizer_options:
+    lr: MISSING
+  loss_options:
+    # https://kevinmusgrave.github.io/pytorch-metric-learning/losses/#arcfaceloss
+    name: "ArcFaceLoss"
+    num_classes: "auto"
+    embedding_size: "auto"
+    weight_reg_weight: MISSING
+    margin: MISSING
+    scale: MISSING
+model:
+  num_out_classes: MISSING
+  hyperparameters:
+    cell_type: "GRU"
+    num_rnn_layers: MISSING
+    rnn_hidden_size: MISSING
+    dropout: MISSING

@@ -1,0 +1,18 @@
+command:
+  - ${env}
+  - python3
+  - ${program}
+  - +experiments/dml_paper=similarity_seed_variance.sweep
+  - ${args_no_hyphens}
+method: grid
+name: similarity_seed_variance_sweep
+parameters:
+  seed:
+    values: [ 784, 537, 574, 712, 708 ]
+  datamodule.seed:
+    values: [ 410, 86, 174, 380, 264 ]
+  datamodule.split.train:
+    value: 27
+program: run.py
+project: YOUR_WANDB_PROJECT
+entity: YOUR_WANDB_ENTITY

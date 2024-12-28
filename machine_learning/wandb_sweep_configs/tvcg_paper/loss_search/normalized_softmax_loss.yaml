@@ -1,0 +1,42 @@
+command:
+  - ${env}
+  - python3
+  - ${program}
+  - +experiments/dml_paper/loss_search=normalized_softmax_loss.sweep
+  - ${args_no_hyphens}
+method: bayes
+metric:
+  goal: maximize
+  name: best_sequence_top_1_accuracy_5_mins/validation/mean
+name: normalized_softmax_loss_sweep
+parameters:
+  model.num_out_classes:
+    distribution: q_uniform
+    min: 32
+    max: 320
+    q: 32
+  lightning_module.optimizer_options.lr:
+    distribution: log_uniform_values
+    max: 0.00005
+    min: 0.000005
+  model.hyperparameters.rnn_hidden_size:
+    distribution: q_uniform
+    min: 100
+    max: 500
+    q: 50
+  model.hyperparameters.num_rnn_layers:
+    min: 1
+    max: 4
+  model.hyperparameters.dropout:
+    min: 0.0
+    max: 0.4
+  # https://kevinmusgrave.github.io/pytorch-metric-learning/losses/#tripletmarginloss
+  lightning_module.loss_options.name:
+    value: "NormalizedSoftmaxLoss"
+  lightning_module.loss_options.temperature:
+    distribution: log_uniform_values
+    max: 0.01
+    min: 0.00001
+program: run.py
+project: YOUR_WANDB_PROJECT
+entity: YOUR_WANDB_ENTITY

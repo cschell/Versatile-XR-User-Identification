@@ -1,0 +1,31 @@
+command:
+  - ${env}
+  - python3
+  - ${program}
+  - +experiments/dml_paper=classification.sweep
+  - ${args_no_hyphens}
+method: bayes
+metric:
+  goal: maximize
+  name: min_accuracy/val
+name: classification_sweep
+parameters:
+  lightning_module.optimizer_options.lr:
+    distribution: log_uniform_values
+    max: 0.001
+    min: 0.00005
+  model.hyperparameters.rnn_hidden_size:
+    distribution: q_uniform
+    min: 50
+    max: 400
+    q: 50
+  model.hyperparameters.num_rnn_layers:
+    min: 2
+    max: 4
+  model.hyperparameters.dropout:
+    min: 0.0
+    max: 0.4
+
+program: run.py
+project: YOUR_WANDB_PROJECT
+entity: YOUR_WANDB_ENTITY

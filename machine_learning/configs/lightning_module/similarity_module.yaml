@@ -1,0 +1,5 @@
+_target_: src.lightning_module.similarity_module.SimilarityModule
+
+optimizer_options:
+  name: "Adam"
+  lr: 0.001
